@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint</title>
+    <style>
+        body{
+            text-align: center;
+            background-image: url("https://static.vecteezy.com/system/resources/previews/003/044/736/non_2x/paint-brush-doodle-banana-apple-abstract-illustration-pattern-free-vector.jpg");
+            background-size: contain;
+        }
+        canvas{
+            background: white;
+        }
+        #options{
+            background-color:white;
+        }
+        .html-submit-button{
+        border-width: 0px;
+        background-color:chartreuse;
+        border-radius: 50px;
+        font-weight: bolder;
+        color: yellow;
+        font-size: large;
+        width: 125px;
+        height: 35px;
+        font-family:Palatino Linotype;
+    }
+    .html-submit-button:hover{
+        background-color: cyan;
+        cursor: pointer;
+        color: purple;
+    }
+    .html-submit-button:active{
+        background-color: orange;
+        cursor: pointer;
+        color: yellow;
+    }
+    .html-linear-gradient{
+        background: linear-gradient(#78075a 0%, #ca680c 100%);
+        border-radius: 50px;
+        border-width: 0px;
+        font-weight: bolder;
+        color: yellow;
+        font-size: large;
+        width: 125px;
+        height: 35px;
+        font-family:Palatino Linotype;
+    }
+    </style>
+</head>
+<body>
+
+
+    <canvas id="draw" width="1500" height="800"></canvas><br><br>
+    <section id="options"><br><br>
+    <h2>Colour</h2>
+    <input type="color" id="colorinp">
+    <h2>Pen Thickness</h2>
+    <input type="text" id="penthick"><br><br>
+    <button class="html-submit-button">Clear</button><br><br>
+    </section>
+
+
+    <script type="text/javascript">
+
+    //Canvas
+    var canvas = document.getElementById("draw");
+    var ctx = canvas.getContext("2d");
+
+    //Variables
+    var lastX,lastY;
+    var colour = "black";
+    var width = 3;
+    var screenWidth = screen.width - 100;
+    var screenHeight = screen.height - 100;
+
+    if (screenWidth<992) {
+        ctx.style.width = screenWidth;
+        ctx.style.height = screenHeight;
+        document.body.style.overflow = "hidden";
+    }
+    canvas.addEventListener("touchstart",mytouchstart);
+    
+    //Function on Mousedown
+    function mytouchstart(e){
+        colour = document.getElementById("colorinp").value;
+        width = eval(document.getElementById("penthick").value);
+        lastX = e.touches[0].clientX-canvas.offsetLeft;
+        lastY = e.touches[0].clientY-canvas.offsetTop;
+    }
+
+    canvas.addEventListener("touchmove",mytouchmove);
+    //Function on Mousemove
+    function mytouchmove(e){
+        var newX = e.touches[0].clientX-canvas.offsetLeft;
+        var newY = e.touches[0].clientY-canvas.offsetTop;
+
+            //Canvas Functions
+            ctx.beginPath();
+            ctx.strokeStyle = colour;
+            ctx.lineWidth = width;
+            ctx.moveTo(lastX,lastY);
+            ctx.lineTo(newX,newY);
+            ctx.stroke();
+
+        //To Update Position Variable
+        lastX = newX;
+        lastY = newY;
+    }
+            
+    //Clear Function
+    document.getElementsByTagName("button")[0].addEventListener("click",function clear() {
+            var canvas = document.getElementById("draw");
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+        });
+    </script>
+</body>
+</html>
